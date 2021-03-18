@@ -3,9 +3,6 @@
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
 http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
 
-	<wsc:config name="Web_Service_Consumer_Config" doc:name="Web Service Consumer Config" doc:id="ff30460f-37b5-438a-b09d-8242a0cdb6cc" >
-		<wsc:connection wsdlLocation="http://localhost:8080/GlobalWeather?wsdl" service="GlobalWeather" port="GlobalWeatherSoap" address="http://localhost:8080/GlobalWeather" />
-	</wsc:config>
 	<flow name="weather-api-main">
         <http:listener config-ref="weather-api-httpListenerConfig" path="/api/*">
             <http:response statusCode="#[vars.httpStatus default 200]">

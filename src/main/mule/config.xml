@@ -9,14 +9,20 @@ http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/m
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
 	
+	<configuration-properties doc:name="Configuration properties" doc:id="fce1bf86-9827-4911-8142-ec2cf953c6b2" file="weather.properties" />
+	
 	<http:listener-config name="weather-api-httpListenerConfig">
         <http:listener-connection host="${weather-api-host}" port="${weather-api-port}" />
     </http:listener-config>
-    <apikit:config name="weather-api-config" api="weather-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
-	<configuration-properties doc:name="Configuration properties" doc:id="da7f6d86-9b13-4d0c-9254-2730e8c7930b" file="weather.properties" />
+    
+    <apikit:config name="weather-api-config" api="global-weather-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
 	
 	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="c4be6ab6-4845-43d5-a3b1-10e7e1ff6d74" basePath="/GlobalWeather?wsdl" >
 		<http:request-connection host="localhost" port="8080" />
 	</http:request-config>
 	
-	</mule>
+	<wsc:config name="Web_Service_Consumer_Config" doc:name="Web Service Consumer Config" doc:id="0d26b55c-a55b-4d98-bb92-7d27f5df4fdf" >
+		<wsc:connection wsdlLocation="http://localhost:8080/GlobalWeather?wsdl" service="GlobalWeather" port="GlobalWeatherSoap" address="http://localhost:8080/GlobalWeather" />
+	</wsc:config>
+	
+</mule>
