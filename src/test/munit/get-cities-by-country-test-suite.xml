@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+	xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<munit:config name="test-suite.xml" />
+	<munit:test name="get-cities-by-country-test-suiteTest" doc:id="351a47d9-a71c-4824-8ae9-d6b450c7b95d" >
+		<munit:execution >
+			<flow-ref doc:name="Call Weather Web Service" doc:id="46b82d31-0de1-4f44-aed8-7e8cab6dc95d" name="call-weather-web-service"/>
+			<flow-ref doc:name="Data Mapping Cities" doc:id="c6f0ad4e-28db-4ea2-9d37-4fd0d0a6ff61" name="data-mapping-cities-subflow"/>
+			<flow-ref doc:name="Remove CDATA" doc:id="9e32e058-74c8-4124-9956-51483e2a5bc3" name="extract-correct-payload"/>
+			<flow-ref doc:name="Set Cities" doc:id="1501e29a-dbd0-4e80-9722-570461c1b315" name="set-city-information"/>
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="f9b10c13-9690-4672-b9dd-d7fe08ff6b35" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>

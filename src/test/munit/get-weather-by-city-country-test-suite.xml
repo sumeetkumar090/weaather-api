@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="get-weather-by-city-country-test-suite.xml" />
+	<munit:test name="get-weather-by-city-country-test-suiteTest" doc:id="9bb85a57-c0b2-4798-8b8b-4c97edbbf624" >
+		<munit:execution >
+			<flow-ref doc:name="Web Service Call" doc:id="23b13ce2-4f82-4f3e-9946-936f2484a0f7" name="web-service-call"/>
+			<flow-ref doc:name="Data Mapping Weather" doc:id="c36667d7-d6e9-40d7-8b93-8b7a3cc08cf2" name="data-mapping-weather-subflow"/>
+			<flow-ref doc:name="Remove CDATA" doc:id="5c355db8-28ef-4ce3-bf3a-c7b0081bfe25" name="extract-correct-payload"/>
+			<flow-ref doc:name="Set Weather From API" doc:id="9752fe6e-625c-414a-a344-84043d7c307a" name="get-data-from-api"/>
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="f7607abf-16bb-4165-95e1-8c891f241f57" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+
+</mule>
