@@ -151,9 +151,8 @@ output application/json
     
     <sub-flow name="get-weather-by-city-country" doc:id="1f1ba8db-e383-4b4f-a004-0c038f762080">
 		<logger level="INFO" doc:name="Log Start" doc:id="6fb1b7a0-040b-4187-8bb5-330b61857cef" message="Get Weather by city and country" />
-		<!--  <http:request method="GET" doc:name="Get web Service call" doc:id="0d32610b-a377-44fb-85a2-bf3f9b4deb3f" config-ref="HTTP_Request_configuration" path="GlobalWeather?wsdl" outputMimeType="application/xml"/>-->
-				
-<wsc:consume operation="GetWeather" doc:name="Invoke SOAP operation" doc:id="0e0556ac-951b-49e4-b807-3778247a0c34" config-ref="Web_Service_Consumer_Config">
+
+	<wsc:consume operation="GetWeather" doc:name="Invoke SOAP operation" doc:id="0e0556ac-951b-49e4-b807-3778247a0c34" config-ref="Web_Service_Consumer_Config">
 			<wsc:message >
 				<wsc:body ><![CDATA[#[%dw 2.0
 output application/xml
@@ -233,30 +232,76 @@ output application/java
 	<flow name="get:\getWeather\getCitiesByCountry:weather-api-config">
 		<flow-ref doc:name="Get Cities by Country" doc:id="642399e4-fcc2-4fd5-9cd2-f74e23cecd06" name="get-cities-by-country" />
     </flow>
-	<sub-flow name="get-cities-by-country" doc:id="0e613024-8292-4949-8232-228daf415baa" >
-		<logger level="INFO" doc:name="Log Start" doc:id="838747a9-7d2b-4f87-8cf7-48d4f720f8e4" message="Get Cities by Country" />
-		<ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	
+	<sub-flow name="get-cities-by-country" doc:id="9d56c30c-1eac-4ad2-a206-0e0fe100dd0e">
+		<logger level="INFO" doc:name="Log Start" doc:id="c3c4015f-5ad8-46d0-8825-ea490e827ec5" message="Get Weather by city and country" />
+
+	<wsc:consume operation="GetWeather" doc:name="Invoke SOAP operation" doc:id="fe418fb7-5304-4736-989c-ed9cca79603b" config-ref="Web_Service_Consumer_Config">
+			<wsc:message >
+				<wsc:body ><![CDATA[#[%dw 2.0
+output application/xml
+ns ns0 http://www.webserviceX.NET
+---
+{
+	ns0#GetCitiesByCountry: {
+		ns0#CountryName: attributes.queryParams.CountryName
+	}
+}]]]></wsc:body>
+			</wsc:message>
+		</wsc:consume>
+		<ee:transform doc:name="Set Payload" doc:id="e1ac556f-46d9-4c79-bb67-43787391e149">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/java
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<choice doc:name="Choice" doc:id="4cc167f4-9afd-4a8f-a278-22f296ad94e2" >
+			<when expression="#[payload != null]" > 
+				<flow-ref doc:name="Data Mapping" doc:id="9f60b58e-5855-458e-8d0d-20d48d148e64" name="data-mapping-cities" />
+				<set-payload value="#[payload]" doc:name="Set Payload " doc:id="a6f9162f-d227-4660-b2f0-fe2e4fdc2216" mimeType="application/xml" />
+				<ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
-[
-  {
-    Country: "Australia",
-    City: "Syney"
-  }, 
-  {
-    Country: "Australia",
-    City: "Wollongong"
-  }, 
-  {
-    Country: "Australia",
-    City: "Kiama"
-  }
-]]]></ee:set-payload>
+{ 
+	cities: payload.NewDataSet.*Table.City
+}
+]]></ee:set-payload>
             </ee:message>
         </ee:transform>
-		<logger level="INFO" doc:name="Log End" doc:id="fa7b3d19-a8c3-4300-9822-a140a110e715" />
+				<set-payload value="#[payload]" doc:name="Set Payload" doc:id="e6643e95-5e82-4c86-9767-b7f13daf0258" />
+				<logger level="INFO" doc:name="Log End" doc:id="acfdbbd5-4101-4139-832f-266627249570" message="Process Complete" />
+			</when>
+			<otherwise >
+				<logger level="INFO" doc:name="Payload Null" doc:id="7586c052-f53b-4d5c-9ff3-220a0efbb82f" message="Payload is Null"/>
+			</otherwise>
+		</choice>
+	</sub-flow>
+	
+	<sub-flow name="data-mapping-cities" doc:id="d4ca8619-cc01-4f39-b8a7-4f0ebc8e4b64" >
+		<ee:transform doc:name="Get Weather Response" doc:id="60487bad-c73b-4ab6-b887-9e64e9b6bab5">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/java
+---
+payload.body.GetCitiesByCountryResponse]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Remove Extra Information" doc:id="c34f3f7f-e304-455e-8f21-d71176eebac2">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/java
+---
+(payload as String replace "&lt;" with "<") 
+	 replace "<![CDATA[" with "" 
+	 replace "]>" with ""
+	 replace "]" with ""
+	 replace "&gt;" with ">"]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
 	</sub-flow>
 	
 </mule>
