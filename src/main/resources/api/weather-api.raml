@@ -1,0 +1,53 @@
+#%RAML 1.0
+version: 1.0
+baseUri: http://localhost:8081/api
+title: Weather API
+traits:
+  errorResponses: !include /examples/error.raml
+
+types:
+  Error:
+    properties:
+      status:
+        description: Http Error Code
+        type: string
+      statusCode:
+        description: Error 
+
+/getWeather:
+  /getCitiesByCountry:
+    get:
+      displayName: GetCitiesByCountry
+      description: Get all major cities by country name.
+      queryParameters:
+        countryName:
+          displayName: CountryName
+          required: true
+          type: string
+      responses:
+        200:
+          description: Successfully retrieved the response
+          body:
+            application/json:
+              example: !include /examples/citiesByCountry.json
+
+  /getWeatherByCityAndCountry:
+    get:
+      displayName: Get weather report by CityName and Country
+      description: List weather of a particular City and Country
+      queryParameters:
+        cityName:
+          displayName: cityName
+          required: true
+          type: string
+        countryName:
+          displayName: countryName
+          required: true
+          type: string
+      responses:
+        200:
+          body:
+            application/json:
+              example: !include /examples/getWeather.json
+
+      is: [errorResponses]
