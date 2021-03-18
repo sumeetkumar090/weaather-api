@@ -20,6 +20,5 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 			<munit-tools:assert-that doc:name="Assert that" doc:id="f9b10c13-9690-4672-b9dd-d7fe08ff6b35" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
 		</munit:validation>
 	</munit:test>
-
-
+	
 </mule>

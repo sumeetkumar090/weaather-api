@@ -5,6 +5,7 @@
 	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	
 	<sub-flow name="get-weather-by-city-country-subflow" doc:id="035545df-c195-42ac-9464-0fa15a053630">
 		<logger level="INFO" doc:name="Log Start" doc:id="6fb1b7a0-040b-4187-8bb5-330b61857cef" message="Get Weather by city and country" />
 		<flow-ref doc:name="Call Weather Web Service" doc:id="719e8c81-fab8-4310-9a58-4ce2beb8527c" name="web-service-call" />
@@ -28,6 +29,7 @@ payload]]></ee:set-payload>
 			</otherwise>
 		</choice>
 	</sub-flow>
+	
 	<sub-flow name="web-service-call" doc:id="7625cb72-1a91-42b4-bb43-cce0faf61065">
 		<wsc:consume operation="GetWeather" doc:name="Invoke SOAP operation" doc:id="0e0556ac-951b-49e4-b807-3778247a0c34" config-ref="Web_Service_Consumer_Config">
 			<wsc:message>
@@ -44,6 +46,7 @@ ns ns0 http://www.webserviceX.NET
 			</wsc:message>
 		</wsc:consume>
 	</sub-flow>
+	
 	<sub-flow name="data-mapping-weather-subflow" doc:id="4c47ed55-f2a2-4563-97a7-6922535dd347">
 		<ee:transform doc:name="Get Weather Response" doc:id="dbd479ab-5dcf-4aef-a7bd-a1511f30c0eb">
 			<ee:message>
@@ -54,6 +57,7 @@ payload.body.GetWeatherResponse]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
 	</sub-flow>
+	
 	<sub-flow name="get-data-from-api" doc:id="e11cc8b4-62f2-42e5-8ecd-b0e98e3ad77c">
 		<ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
             <ee:message>
@@ -75,4 +79,5 @@ output application/json
         </ee:transform>
 		<set-payload value="#[payload]" doc:name="Set Payload" doc:id="2e5bd14f-c7ad-4208-adeb-314f44af62c0" />
 	</sub-flow>
+	
 </mule>

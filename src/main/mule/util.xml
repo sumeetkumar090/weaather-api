@@ -4,6 +4,7 @@
 	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	
 	<sub-flow name="extract-correct-payload" doc:id="a4e4da1c-3bb9-4e99-94e1-7289160b45a7" >
 		<ee:transform doc:name="Remove Extra Information" doc:id="c34f3f7f-e304-455e-8f21-d71176eebac2">
 			<ee:message>
@@ -19,4 +20,5 @@ output application/java
 		</ee:transform>
 		<set-payload value="#[payload]" doc:name="Set Payload " doc:id="a6f9162f-d227-4660-b2f0-fe2e4fdc2216" mimeType="application/xml" />
 	</sub-flow>
+	
 </mule>

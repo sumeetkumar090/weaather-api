@@ -110,6 +110,7 @@ output application/json
             </on-error-propagate>
         </error-handler>
     </flow>
+    
     <flow name="weather-api-console">
         <http:listener config-ref="weather-api-httpListenerConfig" path="/console/*">
             <http:response statusCode="#[vars.httpStatus default 200]">
@@ -140,6 +141,7 @@ output application/json
             </on-error-propagate>
         </error-handler>
     </flow>
+    
     <flow name="get:\getWeather\getWeatherByCityAndCountry:weather-api-config">
 		<logger level="INFO" doc:name="Get Weather Info" doc:id="ce0f1f52-a116-472d-b305-307af4dc08f4" message="Get weather Information"/>
 		<flow-ref doc:name="Get Weather By City and Country" doc:id="860a83bc-d32c-4fdb-8ad8-c65a8517a612" name="get-weather-by-city-country-subflow" />
