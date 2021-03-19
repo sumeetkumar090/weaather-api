@@ -103,4 +103,4 @@ Added extra choice condition just in case there is no response from the SOAP API
 - Currently the SOAP service does not have username and password, if it has we can keep the secrets under the secrets folders and encrypt it so that it is not seen by the outside world.
 - The logging can be improved using Mule Utility package from Mule (Currently using Logger).
 
-- It was a good exercise for me and I tried by best to build it that is as per specs. and I hope it will convince you guys.
+It was a good exercise for me and I tried by best to build it that is as per specs. and I hope it will convince you guys.
