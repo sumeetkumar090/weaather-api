@@ -72,9 +72,9 @@ The project has been followed with best design principles for development:
 
 4. Exception Handling:
 - If the city, country name is missing `HTTP 404` Status code will print on the postman response.
-- Any call to the URL not registered in the RAML specs, will print `400, 404,405 406, 415, 500` status code in the postman call.
+- Any call to the URL registered in the RAML specs, will print `400, 404,405 406, 415, 500` status code in the postman call.
 
-### DESIGN DESIGN
+### DESIGN DECISIONS
 - All the `flows`, `sub-flows`, should confirm to the Mule design principles.
 - `Utility` component is created so that it can be reused again in other places.
 - The `.properties` is setup such that we can access the properties directly from the properties file.
@@ -91,7 +91,16 @@ Getting the response from the wsdl file in Mule flow took some time to understan
 Data sanitization(removing extras CDATA, Lt, gt) from the wsdl response.
 
 ### LEARNING
-I am comfortable with Dataweave as we use it extensively throughout the projects. Learned new things in dataweave transformation as setting payload directly as string.
+I am comfortable with Dataweave as I use it extensively throughout the projects. Learned new things in dataweave transformation as setting payload directly as string.
 Getting wsdl responses directly in Mule flow.
-Different between flowVars and vars in Mule 4.
+Difference between flowVars and vars in Mule 4.
 Added extra choice condition just in case there is no response from the SOAP API.
+
+
+### ENHANCEMENTS:
+- We can have different `.properties` files for `DEV, SIT, PROD` if we need to deploy the projects in different environment.
+- The files can be setup in one config and can be used as per the deployment environment.
+- Currently the SOAP service does not have username and password, if it has we can keep the secrets under the secrets folders and encrypt it so that it is not seen by the outside world.
+- The logging can be improved using Mule Utility package from Mule (Currently using Logger).
+
+- It was a good exercise for me and I tried by best to build it that is as per specs. and I hope it will convince you guys.
