@@ -28,6 +28,7 @@ payload]]></ee:set-payload>
 			</otherwise>
 		</choice>
 	</sub-flow>
+	
 	<sub-flow name="call-weather-web-service" doc:id="727da21a-a0a5-4eda-9334-b0f848e46c42">
 		<wsc:consume operation="GetWeather" doc:name="Invoke SOAP operation" doc:id="fe418fb7-5304-4736-989c-ed9cca79603b" config-ref="Web_Service_Consumer_Config">
 			<wsc:message>
@@ -43,6 +44,7 @@ ns ns0 http://www.webserviceX.NET
 			</wsc:message>
 		</wsc:consume>
 	</sub-flow>
+	
 	<sub-flow name="data-mapping-cities-subflow" doc:id="88391595-de03-4e43-aa46-364481540ab9">
 		<ee:transform doc:name="Get City Response" doc:id="60487bad-c73b-4ab6-b887-9e64e9b6bab5">
 			<ee:message>
@@ -53,6 +55,7 @@ payload.body.GetCitiesByCountryResponse]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
 	</sub-flow>
+	
 	<sub-flow name="set-city-information" doc:id="a9ad6728-520b-4ad2-bc01-10ca0794fcc5">
 		<ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
             <ee:message>
